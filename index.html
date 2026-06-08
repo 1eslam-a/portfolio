@@ -179,7 +179,6 @@
         .cube-links a:hover { color: var(--accent-cyan); }
 
         /* 🔌 Modern Contact Dock */
-        /* 🔌 Ultimate Symmetric Contact Dock */
         .contact-dock {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -278,11 +277,64 @@
         .dock-btn:hover { border-color: var(--accent-cyan); color: #fff; background: rgba(0,242,254,0.05); transform: translateY(-3px); }
 
         @keyframes blink { 50% { border-color: transparent; } }
+
+        /* 🎬 Dynamic Scroll Reveal Architecture */
+        .reveal {
+            opacity: 0;
+            transform: translateY(35px);
+            transition: opacity 0.7s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.7s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 💾 Floating Cybernetic CV Button */
+        .floating-cv {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #070a13;
+            padding: 0.85rem 1.4rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+            z-index: 9999;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .floating-cv:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.6);
+            color: #fff;
+        }
+        .floating-cv i {
+            font-size: 1.1rem;
+        }
+        @media (max-width: 600px) {
+            .floating-cv {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                padding: 0.75rem 1.1rem;
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 <body>
 
     <canvas id="antiGravityCanvas"></canvas>
+
+    <a href="Eslam_Ahmed .pdf" download="Eslam_Ahmed_CV.pdf" class="floating-cv">
+        <i class="fa-solid fa-file-arrow-down"></i>
+        <span>Download CV</span>
+    </a>
 
     <div class="container">
 
@@ -309,8 +361,8 @@
             </div>
         </section>
 
-        <h3 class="section-header"><i class="fa-solid fa-square-poll-vertical"></i> Technical Analytics Matrix</h3>
-        <section class="skills-dashboard">
+        <h3 class="section-header reveal"><i class="fa-solid fa-square-poll-vertical"></i> Technical Analytics Matrix</h3>
+        <section class="skills-dashboard reveal">
             <div class="panel-card">
                 <h3><i class="fa-solid fa-chart-line"></i> Core Engine Metrics</h3>
                 <div class="skill-bar-wrapper">
@@ -382,8 +434,8 @@
             </div>
         </section>
 
-        <h3 class="section-header"><i class="fa-solid fa-graduation-cap"></i> Education & Language Capabilities</h3>
-        <section class="panel-card academic-wide-grid">
+        <h3 class="section-header reveal"><i class="fa-solid fa-graduation-cap"></i> Education & Language Capabilities</h3>
+        <section class="panel-card academic-wide-grid reveal">
             <div class="info-block-sub">
                 <div class="time-meta">2023 — 2027 (Expected)</div>
                 <h4 style="font-size: 1.25rem; margin-top: 0.2rem;">Bachelor of Computer Science</h4>
@@ -420,8 +472,8 @@
             </div>
         </section>
 
-        <h3 class="section-header"><i class="fa-solid fa-briefcase"></i> Professional Experience Logs</h3>
-        <section class="experience-grid-2x2">
+        <h3 class="section-header reveal"><i class="fa-solid fa-briefcase"></i> Professional Experience Logs</h3>
+        <section class="experience-grid-2x2 reveal">
             <div class="timeline-card-flat">
                 <div>
                     <div class="time-meta">2025</div>
@@ -463,9 +515,8 @@
             </div>
         </section>
 
-        <h3 class="section-header"><i class="fa-solid fa-folder-open"></i> Featured Repository Deployments</h3>
-        <section class="projects-showcase-grid">
-            
+        <h3 class="section-header reveal"><i class="fa-solid fa-folder-open"></i> Featured Repository Deployments</h3>
+        <section class="projects-showcase-grid reveal">
             <div class="project-cube">
                 <div class="cube-top">
                     <i class="fa-solid fa-cart-shopping"></i>
@@ -519,11 +570,9 @@
                 </div>
                 <div class="cube-links"><a href="https://github.com/1eslam-a" target="_blank"><i class="fa-brands fa-github"></i> Source Code</a></div>
             </div>
-
         </section>
 
-        <footer class="contact-dock">
-            
+        <footer class="contact-dock reveal">
             <div class="dock-card">
                 <div class="dock-icon-box"><i class="fa-solid fa-envelope"></i></div>
                 <div class="dock-content">
@@ -558,7 +607,6 @@
                     <span>LinkedIn</span>
                 </a>
             </div>
-
         </footer>
 
     </div>
@@ -702,6 +750,29 @@
 
         initParticles();
         animate();
+
+        // 4. 🚀 High-Performance Intersection Observer for Scroll Reveal
+        // This monitors elements with class '.reveal' and flags/unflags them as active dynamically
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    // Removes the active state when element exits viewport (scrolling back up)
+                    entry.target.classList.remove('active');
+                }
+            });
+        };
+
+        const revealObserver = new IntersectionObserver(revealCallback, {
+            root: null,
+            threshold: 0.12, // Element will trigger when 12% visible
+            rootMargin: "0px 0px -40px 0px"
+        });
+
+        document.querySelectorAll('.reveal').forEach(element => {
+            revealObserver.observe(element);
+        });
     </script>
 </body>
 </html>
